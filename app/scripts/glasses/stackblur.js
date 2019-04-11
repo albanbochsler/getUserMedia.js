@@ -85,12 +85,12 @@ function stackBlurImage( imageID, canvasID, radius, blurAlphaChannel )
        
 	var canvas = document.getElementById( canvasID );
       
-    canvas.style.width  = w + "px";
-    canvas.style.height = h + "px";
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
     canvas.width = w;
     canvas.height = h;
     
-    var context = canvas.getContext("2d");
+    var context = canvas.getContext('2d');
     context.clearRect( 0, 0, w, h );
     context.drawImage( img, 0, 0 );
 
@@ -109,7 +109,7 @@ function stackBlurCanvasRGBA( id, top_x, top_y, width, height, radius )
 	radius |= 0;
 	
 	var canvas  = document.getElementById( id );
-	var context = canvas.getContext("2d");
+	var context = canvas.getContext('2d');
 	var imageData;
 	
 	try {
@@ -121,17 +121,17 @@ function stackBlurCanvasRGBA( id, top_x, top_y, width, height, radius )
 		// so it might be okay to remove the whole try/catch block and just use
 		// imageData = context.getImageData( top_x, top_y, width, height );
 		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserRead');
 			imageData = context.getImageData( top_x, top_y, width, height );
 		} catch(e) {
-			alert("Cannot access local image");
-			throw new Error("unable to access local image data: " + e);
+			alert('Cannot access local image');
+			throw new Error('unable to access local image data: ' + e);
 			return;
 		}
 	  }
 	} catch(e) {
-	  alert("Cannot access image");
-	  throw new Error("unable to access image data: " + e);
+	  alert('Cannot access image');
+	  throw new Error('unable to access image data: ' + e);
 	}
 			
 	var pixels = imageData.data;
@@ -376,7 +376,7 @@ function stackBlurCanvasRGB( id, top_x, top_y, width, height, radius )
 	radius |= 0;
 	
 	var canvas  = document.getElementById( id );
-	var context = canvas.getContext("2d");
+	var context = canvas.getContext('2d');
 	var imageData;
 	
 	try {
@@ -388,17 +388,17 @@ function stackBlurCanvasRGB( id, top_x, top_y, width, height, radius )
 		// so it might be okay to remove the whole try/catch block and just use
 		// imageData = context.getImageData( top_x, top_y, width, height );
 		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserRead');
 			imageData = context.getImageData( top_x, top_y, width, height );
 		} catch(e) {
-			alert("Cannot access local image");
-			throw new Error("unable to access local image data: " + e);
+			alert('Cannot access local image');
+			throw new Error('unable to access local image data: ' + e);
 			return;
 		}
 	  }
 	} catch(e) {
-	  alert("Cannot access image");
-	  throw new Error("unable to access image data: " + e);
+	  alert('Cannot access image');
+	  throw new Error('unable to access image data: ' + e);
 	}
 			
 	var pixels = imageData.data;

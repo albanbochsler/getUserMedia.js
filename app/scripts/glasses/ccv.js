@@ -14,11 +14,11 @@ if (parallable === undefined) {
 				async = arguments[0].async;
 				worker_num = arguments[0].worker;
 				params = arguments[0];
-				delete params["async"];
-				delete params["worker"];
+				delete params['async'];
+				delete params['worker'];
 				params = [params];
 			}
-			var scope = { "shared" : {} };
+			var scope = { 'shared' : {} };
 			var ctrl = funct.apply(scope, params);
 			if (async) {
 				return function (complete, error) {
@@ -28,7 +28,7 @@ if (parallable === undefined) {
 					/* sanitize scope shared because for Chrome/WebKit, worker only support JSONable data */
 					for (i in scope.shared)
 						/* delete function, if any */
-						if (typeof scope.shared[i] == "function")
+						if (typeof scope.shared[i] == 'function')
 							delete scope.shared[i];
 						/* delete DOM object, if any */
 						else if (scope.shared[i].tagName !== undefined)
@@ -37,17 +37,17 @@ if (parallable === undefined) {
 						var worker = new Worker(file);
 						worker.onmessage = (function (i) {
 							return function (event) {
-								outputs[i] = (typeof event.data == "string") ? JSON.parse(event.data) : event.data;
+								outputs[i] = (typeof event.data == 'string') ? JSON.parse(event.data) : event.data;
 								executed++;
 								if (executed == worker_num)
 									complete(ctrl.post.apply(scope, [outputs]));
 							}
 						})(i);
-						var msg = { "input" : inputs[i],
-									"name" : funct.toString(),
-									"shared" : scope.shared,
-									"id" : i,
-									"worker" : params.worker_num };
+						var msg = { 'input' : inputs[i],
+									'name' : funct.toString(),
+									'shared' : scope.shared,
+									'id' : i,
+									'worker' : params.worker_num };
 						try {
 							worker.postMessage(msg);
 						} catch (e) {
@@ -78,15 +78,15 @@ function get_named_arguments(params, names) {
 
 var ccv = {
 	pre : function (image) {
-		if (image.tagName.toLowerCase() == "img") {
-			var canvas = document.createElement("canvas");
+		if (image.tagName.toLowerCase() == 'img') {
+			var canvas = document.createElement('canvas');
 			document.body.appendChild(image);
 			canvas.width = image.offsetWidth;
-			canvas.style.width = image.offsetWidth.toString() + "px";
+			canvas.style.width = image.offsetWidth.toString() + 'px';
 			canvas.height = image.offsetHeight;
-			canvas.style.height = image.offsetHeight.toString() + "px";
+			canvas.style.height = image.offsetHeight.toString() + 'px';
 			document.body.removeChild(image);
-			var ctx = canvas.getContext("2d");
+			var ctx = canvas.getContext('2d');
 			ctx.drawImage(image, 0, 0);
 			return canvas;
 		}
@@ -94,7 +94,7 @@ var ccv = {
 	},
 
 	grayscale : function (canvas) {
-		var ctx = canvas.getContext("2d");
+		var ctx = canvas.getContext('2d');
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 		var data = imageData.data;
 		var pix1, pix2, pix = canvas.width * canvas.height * 4;
@@ -108,9 +108,9 @@ var ccv = {
 		var i, j;
 		var node = new Array(seq.length);
 		for (i = 0; i < seq.length; i++)
-			node[i] = {"parent" : -1,
-					   "element" : seq[i],
-					   "rank" : 0};
+			node[i] = {'parent' : -1,
+					   'element' : seq[i],
+					   'rank' : 0};
 		for (i = 0; i < seq.length; i++) {
 			if (!node[i].element)
 				continue;
@@ -167,12 +167,12 @@ var ccv = {
 			}
 			idx[i] = j;
 		}
-		return {"index" : idx, "cat" : class_idx};
+		return {'index' : idx, 'cat' : class_idx};
 	},
 
-	detect_objects : parallable("ccv.js", function (canvas, cascade, interval, min_neighbors) {
+	detect_objects : parallable('ccv.js', function (canvas, cascade, interval, min_neighbors) {
 		if (this.shared !== undefined) {
-			var params = get_named_arguments(arguments, ["canvas", "cascade", "interval", "min_neighbors"]);
+			var params = get_named_arguments(arguments, ['canvas', 'cascade', 'interval', 'min_neighbors']);
 			this.shared.canvas = params.canvas;
 			this.shared.interval = params.interval;
 			this.shared.min_neighbors = params.min_neighbors;
@@ -193,50 +193,50 @@ var ccv = {
 			var pyr = new Array((scale_upto + next * 2) * 4);
 			var ret = new Array((scale_upto + next * 2) * 4);
 			pyr[0] = canvas;
-			ret[0] = { "width" : pyr[0].width,
-					   "height" : pyr[0].height,
-					   "data" : pyr[0].getContext("2d").getImageData(0, 0, pyr[0].width, pyr[0].height).data };
+			ret[0] = { 'width' : pyr[0].width,
+					   'height' : pyr[0].height,
+					   'data' : pyr[0].getContext('2d').getImageData(0, 0, pyr[0].width, pyr[0].height).data };
 			var i;
 			for (i = 1; i <= interval; i++) {
-				pyr[i * 4] = document.createElement("canvas");
+				pyr[i * 4] = document.createElement('canvas');
 				pyr[i * 4].width = Math.floor(pyr[0].width / Math.pow(scale, i));
 				pyr[i * 4].height = Math.floor(pyr[0].height / Math.pow(scale, i));
-				pyr[i * 4].getContext("2d").drawImage(pyr[0], 0, 0, pyr[0].width, pyr[0].height, 0, 0, pyr[i * 4].width, pyr[i * 4].height);
-				ret[i * 4] = { "width" : pyr[i * 4].width,
-							   "height" : pyr[i * 4].height,
-							   "data" : pyr[i * 4].getContext("2d").getImageData(0, 0, pyr[i * 4].width, pyr[i * 4].height).data };
+				pyr[i * 4].getContext('2d').drawImage(pyr[0], 0, 0, pyr[0].width, pyr[0].height, 0, 0, pyr[i * 4].width, pyr[i * 4].height);
+				ret[i * 4] = { 'width' : pyr[i * 4].width,
+							   'height' : pyr[i * 4].height,
+							   'data' : pyr[i * 4].getContext('2d').getImageData(0, 0, pyr[i * 4].width, pyr[i * 4].height).data };
 			}
 			for (i = next; i < scale_upto + next * 2; i++) {
-				pyr[i * 4] = document.createElement("canvas");
+				pyr[i * 4] = document.createElement('canvas');
 				pyr[i * 4].width = Math.floor(pyr[i * 4 - next * 4].width / 2);
 				pyr[i * 4].height = Math.floor(pyr[i * 4 - next * 4].height / 2);
-				pyr[i * 4].getContext("2d").drawImage(pyr[i * 4 - next * 4], 0, 0, pyr[i * 4 - next * 4].width, pyr[i * 4 - next * 4].height, 0, 0, pyr[i * 4].width, pyr[i * 4].height);
-				ret[i * 4] = { "width" : pyr[i * 4].width,
-							   "height" : pyr[i * 4].height,
-							   "data" : pyr[i * 4].getContext("2d").getImageData(0, 0, pyr[i * 4].width, pyr[i * 4].height).data };
+				pyr[i * 4].getContext('2d').drawImage(pyr[i * 4 - next * 4], 0, 0, pyr[i * 4 - next * 4].width, pyr[i * 4 - next * 4].height, 0, 0, pyr[i * 4].width, pyr[i * 4].height);
+				ret[i * 4] = { 'width' : pyr[i * 4].width,
+							   'height' : pyr[i * 4].height,
+							   'data' : pyr[i * 4].getContext('2d').getImageData(0, 0, pyr[i * 4].width, pyr[i * 4].height).data };
 			}
 			for (i = next * 2; i < scale_upto + next * 2; i++) {
-				pyr[i * 4 + 1] = document.createElement("canvas");
+				pyr[i * 4 + 1] = document.createElement('canvas');
 				pyr[i * 4 + 1].width = Math.floor(pyr[i * 4 - next * 4].width / 2);
 				pyr[i * 4 + 1].height = Math.floor(pyr[i * 4 - next * 4].height / 2);
-				pyr[i * 4 + 1].getContext("2d").drawImage(pyr[i * 4 - next * 4], 1, 0, pyr[i * 4 - next * 4].width - 1, pyr[i * 4 - next * 4].height, 0, 0, pyr[i * 4 + 1].width - 2, pyr[i * 4 + 1].height);
-				ret[i * 4 + 1] = { "width" : pyr[i * 4 + 1].width,
-								   "height" : pyr[i * 4 + 1].height,
-								   "data" : pyr[i * 4 + 1].getContext("2d").getImageData(0, 0, pyr[i * 4 + 1].width, pyr[i * 4 + 1].height).data };
-				pyr[i * 4 + 2] = document.createElement("canvas");
+				pyr[i * 4 + 1].getContext('2d').drawImage(pyr[i * 4 - next * 4], 1, 0, pyr[i * 4 - next * 4].width - 1, pyr[i * 4 - next * 4].height, 0, 0, pyr[i * 4 + 1].width - 2, pyr[i * 4 + 1].height);
+				ret[i * 4 + 1] = { 'width' : pyr[i * 4 + 1].width,
+								   'height' : pyr[i * 4 + 1].height,
+								   'data' : pyr[i * 4 + 1].getContext('2d').getImageData(0, 0, pyr[i * 4 + 1].width, pyr[i * 4 + 1].height).data };
+				pyr[i * 4 + 2] = document.createElement('canvas');
 				pyr[i * 4 + 2].width = Math.floor(pyr[i * 4 - next * 4].width / 2);
 				pyr[i * 4 + 2].height = Math.floor(pyr[i * 4 - next * 4].height / 2);
-				pyr[i * 4 + 2].getContext("2d").drawImage(pyr[i * 4 - next * 4], 0, 1, pyr[i * 4 - next * 4].width, pyr[i * 4 - next * 4].height - 1, 0, 0, pyr[i * 4 + 2].width, pyr[i * 4 + 2].height - 2);
-				ret[i * 4 + 2] = { "width" : pyr[i * 4 + 2].width,
-								   "height" : pyr[i * 4 + 2].height,
-								   "data" : pyr[i * 4 + 2].getContext("2d").getImageData(0, 0, pyr[i * 4 + 2].width, pyr[i * 4 + 2].height).data };
-				pyr[i * 4 + 3] = document.createElement("canvas");
+				pyr[i * 4 + 2].getContext('2d').drawImage(pyr[i * 4 - next * 4], 0, 1, pyr[i * 4 - next * 4].width, pyr[i * 4 - next * 4].height - 1, 0, 0, pyr[i * 4 + 2].width, pyr[i * 4 + 2].height - 2);
+				ret[i * 4 + 2] = { 'width' : pyr[i * 4 + 2].width,
+								   'height' : pyr[i * 4 + 2].height,
+								   'data' : pyr[i * 4 + 2].getContext('2d').getImageData(0, 0, pyr[i * 4 + 2].width, pyr[i * 4 + 2].height).data };
+				pyr[i * 4 + 3] = document.createElement('canvas');
 				pyr[i * 4 + 3].width = Math.floor(pyr[i * 4 - next * 4].width / 2);
 				pyr[i * 4 + 3].height = Math.floor(pyr[i * 4 - next * 4].height / 2);
-				pyr[i * 4 + 3].getContext("2d").drawImage(pyr[i * 4 - next * 4], 1, 1, pyr[i * 4 - next * 4].width - 1, pyr[i * 4 - next * 4].height - 1, 0, 0, pyr[i * 4 + 3].width - 2, pyr[i * 4 + 3].height - 2);
-				ret[i * 4 + 3] = { "width" : pyr[i * 4 + 3].width,
-								   "height" : pyr[i * 4 + 3].height,
-								   "data" : pyr[i * 4 + 3].getContext("2d").getImageData(0, 0, pyr[i * 4 + 3].width, pyr[i * 4 + 3].height).data };
+				pyr[i * 4 + 3].getContext('2d').drawImage(pyr[i * 4 - next * 4], 1, 1, pyr[i * 4 - next * 4].width - 1, pyr[i * 4 - next * 4].height - 1, 0, 0, pyr[i * 4 + 3].width - 2, pyr[i * 4 + 3].height - 2);
+				ret[i * 4 + 3] = { 'width' : pyr[i * 4 + 3].width,
+								   'height' : pyr[i * 4 + 3].height,
+								   'data' : pyr[i * 4 + 3].getContext('2d').getImageData(0, 0, pyr[i * 4 + 3].width, pyr[i * 4 + 3].height).data };
 			}
 			return [ret];
 		};
@@ -263,11 +263,11 @@ var ccv = {
 					var orig_feature = cascade.stage_classifier[j].orig_feature;
 					var feature = cascade.stage_classifier[j].feature = new Array(cascade.stage_classifier[j].count);
 					for (k = 0; k < cascade.stage_classifier[j].count; k++) {
-						feature[k] = {"size" : orig_feature[k].size,
-									  "px" : new Array(orig_feature[k].size),
-									  "pz" : new Array(orig_feature[k].size),
-									  "nx" : new Array(orig_feature[k].size),
-									  "nz" : new Array(orig_feature[k].size)};
+						feature[k] = {'size' : orig_feature[k].size,
+									  'px' : new Array(orig_feature[k].size),
+									  'pz' : new Array(orig_feature[k].size),
+									  'nx' : new Array(orig_feature[k].size),
+									  'nz' : new Array(orig_feature[k].size)};
 						for (q = 0; q < orig_feature[k].size; q++) {
 							feature[k].px[q] = orig_feature[k].px[q] * 4 + orig_feature[k].py[q] * step[orig_feature[k].pz[q]];
 							feature[k].pz[q] = orig_feature[k].pz[q];
@@ -326,12 +326,12 @@ var ccv = {
 								}
 							}
 							if (flag) {
-								seq.push({"x" : (x * 4 + dx[q] * 2) * scale_x,
-										  "y" : (y * 4 + dy[q] * 2) * scale_y,
-										  "width" : cascade.width * scale_x,
-										  "height" : cascade.height * scale_y,
-										  "neighbor" : 1,
-										  "confidence" : sum});
+								seq.push({'x' : (x * 4 + dx[q] * 2) * scale_x,
+										  'y' : (y * 4 + dy[q] * 2) * scale_y,
+										  'width' : cascade.width * scale_x,
+										  'height' : cascade.height * scale_y,
+										  'neighbor' : 1,
+										  'confidence' : sum});
 							}
 							u8o[0] += 16;
 							u8o[1] += 8;
@@ -376,12 +376,12 @@ var ccv = {
 				var idx_seq = result.index;
 				var comps = new Array(ncomp + 1);
 				for (i = 0; i < comps.length; i++)
-					comps[i] = {"neighbors" : 0,
-								"x" : 0,
-								"y" : 0,
-								"width" : 0,
-								"height" : 0,
-								"confidence" : 0};
+					comps[i] = {'neighbors' : 0,
+								'x' : 0,
+								'y' : 0,
+								'width' : 0,
+								'height' : 0,
+								'confidence' : 0};
 
 				// count number of neighbors
 				for(i = 0; i < seq.length; i++)
@@ -407,12 +407,12 @@ var ccv = {
 				{
 					var n = comps[i].neighbors;
 					if (n >= min_neighbors)
-						seq2.push({"x" : (comps[i].x * 2 + n) / (2 * n),
-								   "y" : (comps[i].y * 2 + n) / (2 * n),
-								   "width" : (comps[i].width * 2 + n) / (2 * n),
-								   "height" : (comps[i].height * 2 + n) / (2 * n),
-								   "neighbors" : comps[i].neighbors,
-								   "confidence" : comps[i].confidence});
+						seq2.push({'x' : (comps[i].x * 2 + n) / (2 * n),
+								   'y' : (comps[i].y * 2 + n) / (2 * n),
+								   'width' : (comps[i].width * 2 + n) / (2 * n),
+								   'height' : (comps[i].height * 2 + n) / (2 * n),
+								   'neighbors' : comps[i].neighbors,
+								   'confidence' : comps[i].confidence});
 				}
 
 				var result_seq = [];
@@ -444,13 +444,13 @@ var ccv = {
 				return result_seq;
 			}
 		};
-		return { "pre" : pre, "core" : core, "post" : post };
+		return { 'pre' : pre, 'core' : core, 'post' : post };
 	})
 }
 
 onmessage = function (event) {
-	var data = (typeof event.data == "string") ? JSON.parse(event.data) : event.data;
-	var scope = { "shared" : data.shared };
+	var data = (typeof event.data == 'string') ? JSON.parse(event.data) : event.data;
+	var scope = { 'shared' : data.shared };
 	var result = parallable.core[data.name].apply(scope, [data.input, data.id, data.worker]);
 	try {
 		postMessage(result);

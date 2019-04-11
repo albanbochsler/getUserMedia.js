@@ -1,9 +1,5 @@
-/*!
-* getusermedia-js
-* v1.0.0 - 2015-12-20
-* https://github.com/addyosmani/getUserMedia.js
-* (c) Addy Osmani; MIT License
-*//*this is a special version of the library with flash fallback support
+/*global navigator, document */
+/*this is a special version of the library with flash fallback support
 stripped out, for anyone that wants it*/
 ;(function (window, document) {
     "use strict";

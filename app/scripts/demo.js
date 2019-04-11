@@ -21,8 +21,8 @@
 				this.cam = null;
 				this.filter_on = false;
 				this.filter_id = 0;
-				this.canvas = document.getElementById("canvas");
-				this.ctx = this.canvas.getContext("2d");
+				this.canvas = document.getElementById('canvas');
+				this.ctx = this.canvas.getContext('2d');
 				this.img = new Image();
 				this.ctx.clearRect(0, 0, this.options.width, this.options.height);
 				this.image = this.ctx.getImageData(0, 0, this.options.width, this.options.height);
@@ -66,9 +66,9 @@
 		// events that are triggered onCapture and onSave (for the fallback)
 		// and so on.
 		options: {
-			"audio": false, //OTHERWISE FF nightlxy throws an NOT IMPLEMENTED error
-			"video": true,
-			el: "webcam",
+			'audio': false, //OTHERWISE FF nightlxy throws an NOT IMPLEMENTED error
+			'video': true,
+			el: 'webcam',
 
 			extern: null,
 			append: true,
@@ -78,11 +78,11 @@
 			width: 320, 
 			height: 240, 
 
-			mode: "callback",
+			mode: 'callback',
 			// callback | save | stream
-			swffile: "../dist/fallback/jscam_canvas_only.swf",
+			swffile: '../dist/fallback/jscam_canvas_only.swf',
 			quality: 85,
-			context: "",
+			context: '',
 
 			debug: function () {},
 			onCapture: function () {
@@ -91,7 +91,7 @@
 			onTick: function () {},
 			onSave: function (data) {
 
-				var col = data.split(";"),
+				var col = data.split(';'),
 					img = App.image,
 					tmp = null,
 					w = this.width,
@@ -121,7 +121,7 @@
 
 				var video = App.options.videoEl;
 				
-				if ((typeof MediaStream !== "undefined" && MediaStream !== null) && stream instanceof MediaStream) {
+				if ((typeof MediaStream !== 'undefined' && MediaStream !== null) && stream instanceof MediaStream) {
 		
 					if (video.mozSrcObject !== undefined) { //FF18a
 						video.mozSrcObject = stream;
@@ -187,9 +187,9 @@
 
 			source = document.querySelector('#canvas');
 			glasses = new Image();
-			glasses.src = "js/glasses/i/glasses.png";
-			canvas = document.querySelector("#output");
-			ctx = canvas.getContext("2d");
+			glasses.src = 'js/glasses/i/glasses.png';
+			canvas = document.querySelector('#output');
+			ctx = canvas.getContext('2d');
 
 			ctx.drawImage(source, 0, 0, 520, 426);
 
@@ -237,10 +237,10 @@
 			} else if (effect === 'glasses') {
 
 				var comp = ccv.detect_objects({
-					"canvas": (canvas),
-					"cascade": cascade,
-					"interval": 5,
-					"min_neighbors": 1
+					'canvas': (canvas),
+					'cascade': cascade,
+					'interval': 5,
+					'min_neighbors': 1
 				});
 
 				// Draw glasses on everyone!
