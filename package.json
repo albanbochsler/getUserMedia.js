@@ -26,12 +26,12 @@
     }
   ],
   "files": [
-    "dist/getUserMedia.js",
-    "dist/getUserMedia.noFallback.js",
-    "dist/getUserMedia.min.js",
-    "dist/getUserMedia.noFallback.min.js",
-    "dist/fallback/jscam.swf",
-    "dist/fallback/jscam_canvas_only.swf"
+    "app/dist/getUserMedia.js",
+    "app/dist/getUserMedia.noFallback.js",
+    "app/dist/getUserMedia.min.js",
+    "app/dist/getUserMedia.noFallback.min.js",
+    "app/dist/fallback/jscam.swf",
+    "app/dist/fallback/jscam_canvas_only.swf"
   ],
   "devDependencies": {
     "@babel/core": "^7.1.2",
