@@ -126,6 +126,7 @@
 					if (video.mozSrcObject !== undefined) { //FF18a
 						video.mozSrcObject = stream;
 					} else { //FF16a, 17a
+					  // why
 						video.srcObject = stream;
 					}
 
